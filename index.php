@@ -1,13 +1,11 @@
 ﻿<?php
+require_once 'search.php';
 
 $resultado = array();
+$json = json_decode(file_get_contents('filtro.json'));
+$search = new Search('produtos.csv');
+$resultado = $search->items($json->codigo);
 
-if (isset($_POST['codigo']) && !empty($_POST['codigo'])) {
-    require_once 'search.php';
-    $search = new Search('produtos.csv');
-
-    $resultado = $search->item($_POST['codigo']);
-}
 ?>
 <!doctype html>
 <html>
@@ -20,15 +18,10 @@ if (isset($_POST['codigo']) && !empty($_POST['codigo'])) {
 <form method="post" action="index.php">
     <fieldset>
         <legend>Consulta de Preços - <b>Mário Louças</b></legend>
-        <label>
-            Código (em <font color=red><b>vermelho</font></b> no Catálogo):
-            <input type="text" name="codigo" value=""/>
-        </label>
-        <input type="submit" value="Consultar...">
+        
     </fieldset>
 </form>
 
-<?php if (isset($_POST['codigo'])): ?>
     <h1>Resultado de Busca</h1>
     <?php if (!empty($resultado)): ?>
         <table border="1">
@@ -56,7 +49,6 @@ if (isset($_POST['codigo']) && !empty($_POST['codigo'])) {
     <?php else: ?>
         <p><h3><b><font color=red>Código não encontrado - verifique se foi digitado corretamente</font></b></h3></p>
     <?php endif; ?>
-<?php endif; ?>
 </font>
 </body>
 </html>
