@@ -22,6 +22,27 @@ class Search
     }
 
     /**
+     * @param array $codigos
+     * @return array
+     */
+    public function items($codigos)
+    {
+        $result = array();
+        
+        foreach($codigos as $codigo)
+        {
+            $match = $this->item($codigo);
+
+            if(!empty($match))
+            {
+                $result[] = $match[0];
+            }
+        }
+
+        return $result;
+    }
+
+    /**
      * Search constructor.
      * @param String $database
      */
